@@ -1,0 +1,31 @@
+{
+	"name": "video-tutorials",
+	"version": "1.0.0",
+	"description": "application created with express.js and express-handlebars",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/darinchakalov/Video-Tutorials.git"
+	},
+	"author": "Darin Chakalov",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/darinchakalov/Video-Tutorials/issues"
+	},
+	"homepage": "https://github.com/darinchakalov/Video-Tutorials#readme",
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"cookie-parser": "^1.4.6",
+		"express": "^4.17.2",
+		"express-handlebars": "^6.0.2",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.1.8"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
