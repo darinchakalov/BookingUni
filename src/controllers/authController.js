@@ -5,7 +5,7 @@ const { TOKEN_COOKIE_NAME } = require("../config/constants.js");
 const { isAuth, isGuest } = require("../middlewares/authMiddleware.js");
 
 const renderLoginPage = (req, res) => {
-	res.render("login");
+	res.render("user-pages/login");
 };
 
 const loginUser = async (req, res) => {
@@ -22,23 +22,23 @@ const loginUser = async (req, res) => {
 		res.redirect("/");
 	} catch (error) {
 		res.locals.error = error;
-		return res.render("login");
+		return res.render("user-pages/login");
 	}
 };
 
 const renderRegisterPage = (req, res) => {
-	res.render("register");
+	res.render("user-pages/register");
 };
 
 const registerUser = async (req, res) => {
 	let { username, password, repeatPassword } = req.body;
 	if (password !== repeatPassword) {
 		res.locals.error = "Passwords do not match!";
-		return res.render("register");
+		return res.render("user-pages/register");
 	}
 	if (await authServices.userExists(username)) {
 		res.locals.error = "Username already exists!";
-		return res.render("register");
+		return res.render("user-pages/register");
 	}
 	try {
 		await authServices.register(username, password);
@@ -52,7 +52,7 @@ const registerUser = async (req, res) => {
 		res.redirect("/");
 	} catch (error) {
 		req.locals.error = "Passwords do not match!";
-		res.render("register");
+		res.render("user-pages/register");
 	}
 };
 

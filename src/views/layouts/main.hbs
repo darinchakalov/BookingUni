@@ -14,12 +14,20 @@
 				<div class="left-container">
 					<ul>
 						<li><a href="">Home</a></li>
-						<li><a href="">Add +</a></li>
+						{{#if user}}
+							<li><a href="">Add +</a></li>
+						{{/if}}
 					</ul>
 				</div>
 				<div class="right-container">
-					<a href="" class="log-out">{{name}}</a>
-					<a href="" class="log-out">Logout</a>
+					{{#if user}}
+						<a href="/profile" class="log-out">{{name}}</a>
+						<a href="/logout" class="log-out">Logout</a>
+
+					{{else}}
+						<a href="/login" class="log-out">Login</a>
+						<a href="/register" class="log-out">Register</a>
+					{{/if}}
 				</div>
 			</nav>
 			{{{body}}}
