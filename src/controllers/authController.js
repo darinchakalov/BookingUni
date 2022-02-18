@@ -31,8 +31,8 @@ const renderRegisterPage = (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-	let { username, password, repeatPassword } = req.body;
-	if (password !== repeatPassword) {
+	let { email, username, password, rePassword } = req.body;
+	if (password !== rePassword) {
 		res.locals.error = "Passwords do not match!";
 		return res.render("user-pages/register");
 	}
@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
 		return res.render("user-pages/register");
 	}
 	try {
-		await authServices.register(username, password);
+		await authServices.register(email, username, password);
 
 		let user = await authServices.login(username, password);
 		let token = await authServices.createToken(user);
