@@ -33,7 +33,9 @@ const book = async function (userId, hotelId) {
 const getBooked = function (id) {
 	return Hotel.findById(id).populate("usersBooked");
 };
-
+const getAllPopulated = function name() {
+	return Hotel.find().populate("usersBooked");
+};
 const bookingServices = {
 	create,
 	getAll,
@@ -42,6 +44,7 @@ const bookingServices = {
 	del,
 	book,
 	getBooked,
+	getAllPopulated,
 };
 
 module.exports = bookingServices;

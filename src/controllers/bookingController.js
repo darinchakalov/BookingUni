@@ -75,6 +75,7 @@ const bookHotel = async (req, res) => {
 	}
 };
 
+
 router.get("/create", renderCreatePage);
 router.post("/create", createBooking);
 router.get("/details/:id", renderDetailsPage);

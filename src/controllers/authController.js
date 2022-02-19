@@ -3,6 +3,7 @@ const router = require("express").Router();
 const authServices = require("../services/authServices.js");
 const { TOKEN_COOKIE_NAME } = require("../config/constants.js");
 const { isAuth, isGuest } = require("../middlewares/authMiddleware.js");
+const bookingServices = require("../services/bookingServices.js");
 
 const renderLoginPage = (req, res) => {
 	res.render("user-pages/login");
@@ -61,10 +62,21 @@ const logoutUser = (req, res) => {
 	res.redirect("/");
 };
 
+const renderProfilePage = async (req, res) => {
+	let userData = await authServices.getUser(res.user.id);
+	let allHotels = await bookingServices.getAllPopulated();
+	let userBookings = allHotels
+		.filter((x) => x.usersBooked.some((x) => x._id == res.user.id))
+		.map((x) => x.hotel)
+		.join(", ");
+	res.render("user-pages/profile", { userData, userBookings });
+};
+
 router.get("/login", isGuest, renderLoginPage);
 router.post("/login", loginUser);
 router.get("/register", isGuest, renderRegisterPage);
 router.post("/register", registerUser);
 router.get("/logout", isAuth, logoutUser);
+router.get("/profile", isAuth, renderProfilePage);
 
 module.exports = router;
