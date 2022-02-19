@@ -12,10 +12,15 @@ const getOne = function (id) {
 	return Hotel.findById(id).lean();
 };
 
+const edit = function (hotel, city, freeRooms, imgUrl, id) {
+	return Hotel.findByIdAndUpdate(id, { hotel, city, freeRooms, imgUrl });
+};
+
 const bookingServices = {
 	create,
 	getAll,
 	getOne,
+	edit,
 };
 
 module.exports = bookingServices;

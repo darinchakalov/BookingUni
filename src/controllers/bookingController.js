@@ -40,9 +40,21 @@ const renderEditPage = async (req, res) => {
 	}
 };
 
+const editHotel = async (req, res) => {
+	const { hotel, city, freeRooms, imgUrl } = req.body;
+	try {
+		await bookingServices.edit(hotel, city, freeRooms, imgUrl, req.params.id);
+		res.redirect(`/details/${req.params.id}`);
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("booking-pages/edit");
+	}
+};
+
 router.get("/create", renderCreatePage);
 router.post("/create", createBooking);
 router.get("/details/:id", renderDetailsPage);
 router.get("/edit/:id", renderEditPage);
+router.post("/edit/:id", editHotel);
 
 module.exports = router;
