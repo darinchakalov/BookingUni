@@ -7,7 +7,7 @@ const renderCreatePage = (req, res) => {
 };
 
 const createBooking = async (req, res) => {
-	let userId = res.user.id;
+	let userId = res.user?.id;
 	const { hotel, city, freeRooms, imgUrl } = req.body;
 
 	try {
@@ -22,8 +22,12 @@ const createBooking = async (req, res) => {
 const renderDetailsPage = async (req, res) => {
 	try {
 		let hotel = await bookingServices.getOne(req.params.id);
-		let owner = res.user.id == hotel.owner;
-		res.render("booking-pages/details", { ...hotel, owner });
+		let owner = res.user?.id == hotel.owner;
+		let booked = await bookingServices.getBooked(req.params.id);
+		let availableRooms = booked.availableRooms();
+		let hasRooms = availableRooms > 0;
+		let hasBooked = booked.usersBooked.some((x) => x._id == res.user?.id);
+		res.render("booking-pages/details", { ...hotel, owner, hasBooked, hasRooms, availableRooms });
 	} catch (error) {
 		res.locals.error = error.message;
 		res.render("booking-pages/details");
@@ -61,11 +65,22 @@ const deleteHotel = async (req, res) => {
 	}
 };
 
+const bookHotel = async (req, res) => {
+	try {
+		await bookingServices.book(res.user.id, req.params.id);
+		res.redirect(`/details/${req.params.id}`);
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("booking-pages/details");
+	}
+};
+
 router.get("/create", renderCreatePage);
 router.post("/create", createBooking);
 router.get("/details/:id", renderDetailsPage);
 router.get("/edit/:id", renderEditPage);
 router.post("/edit/:id", editHotel);
 router.get("/delete/:id", deleteHotel);
+router.get("/book/:id", bookHotel);
 
 module.exports = router;

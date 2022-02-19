@@ -20,12 +20,28 @@ const del = function (id) {
 	return Hotel.findByIdAndRemove(id);
 };
 
+const book = async function (userId, hotelId) {
+	try {
+		let hotel = await Hotel.findById(hotelId);
+		hotel.usersBooked.push(userId);
+		return hotel.save();
+	} catch (error) {
+		return error;
+	}
+};
+
+const getBooked = function (id) {
+	return Hotel.findById(id).populate("usersBooked");
+};
+
 const bookingServices = {
 	create,
 	getAll,
 	getOne,
 	edit,
 	del,
+	book,
+	getBooked,
 };
 
 module.exports = bookingServices;

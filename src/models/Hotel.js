@@ -29,6 +29,10 @@ const bookingSchema = new mongoose.Schema({
 	],
 });
 
+bookingSchema.method("availableRooms", function () {
+	return this.freeRooms - this.usersBooked.length;
+});
+
 const Hotel = mongoose.model("Hotel", bookingSchema);
 
 module.exports = Hotel;
