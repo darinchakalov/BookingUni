@@ -51,10 +51,21 @@ const editHotel = async (req, res) => {
 	}
 };
 
+const deleteHotel = async (req, res) => {
+	try {
+		await bookingServices.del(req.params.id);
+		res.redirect("/");
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("booking-pages/details");
+	}
+};
+
 router.get("/create", renderCreatePage);
 router.post("/create", createBooking);
 router.get("/details/:id", renderDetailsPage);
 router.get("/edit/:id", renderEditPage);
 router.post("/edit/:id", editHotel);
+router.get("/delete/:id", deleteHotel);
 
 module.exports = router;

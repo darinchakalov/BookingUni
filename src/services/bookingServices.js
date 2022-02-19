@@ -16,11 +16,16 @@ const edit = function (hotel, city, freeRooms, imgUrl, id) {
 	return Hotel.findByIdAndUpdate(id, { hotel, city, freeRooms, imgUrl });
 };
 
+const del = function (id) {
+	return Hotel.findByIdAndRemove(id);
+};
+
 const bookingServices = {
 	create,
 	getAll,
 	getOne,
 	edit,
+	del,
 };
 
 module.exports = bookingServices;
