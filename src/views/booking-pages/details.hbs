@@ -14,9 +14,13 @@
 			<p><span>Free rooms: {{freeRooms}}</span> </p>
 			<p><span class="green">You already have booked a room</span> </p>
 
-			<a href="" class="book">Book</a>
-			<a href="" class="edit">Edit</a>
-			<a href="" class="remove">Delete</a>
+			{{#if owner}}
+				<a href="/edit/{{_id}}" class="edit">Edit</a>
+				<a href="/delete/{{_id}}" class="remove">Delete</a>
+			{{else}}
+				<a href="/book/{{_id}}" class="book">Book</a>
+			{{/if}}
+
 		</div>
 
 	</div>

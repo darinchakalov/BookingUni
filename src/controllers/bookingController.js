@@ -7,10 +7,11 @@ const renderCreatePage = (req, res) => {
 };
 
 const createBooking = async (req, res) => {
+	let userId = res.user.id;
 	const { hotel, city, freeRooms, imgUrl } = req.body;
 
 	try {
-		await bookingServices.create(hotel, city, freeRooms, imgUrl);
+		await bookingServices.create(hotel, city, freeRooms, imgUrl, userId);
 		res.redirect("/");
 	} catch (error) {
 		res.locals.error = error.message;
@@ -21,16 +22,27 @@ const createBooking = async (req, res) => {
 const renderDetailsPage = async (req, res) => {
 	try {
 		let hotel = await bookingServices.getOne(req.params.id);
-        
-		res.render("booking-pages/details", hotel);
+		let owner = res.user.id == hotel.owner;
+		res.render("booking-pages/details", { ...hotel, owner });
 	} catch (error) {
 		res.locals.error = error.message;
 		res.render("booking-pages/details");
 	}
 };
 
+const renderEditPage = async (req, res) => {
+	try {
+		let hotel = await bookingServices.getOne(req.params.id);
+		res.render("booking-pages/edit", hotel);
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("booking-pages/edit");
+	}
+};
+
 router.get("/create", renderCreatePage);
 router.post("/create", createBooking);
 router.get("/details/:id", renderDetailsPage);
+router.get("/edit/:id", renderEditPage);
 
 module.exports = router;
