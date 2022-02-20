@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const bookingServices = require("../services/bookingServices.js");
 const { isGuest, isAuth } = require("../middlewares/authMiddleware.js");
+const validator = require("validator");
 
 const renderCreatePage = (req, res) => {
 	res.render("booking-pages/create");
@@ -9,7 +10,15 @@ const renderCreatePage = (req, res) => {
 
 const createBooking = async (req, res) => {
 	let userId = res.user?.id;
+
 	const { hotel, city, freeRooms, imgUrl } = req.body;
+
+	if (
+		(!validator.isURL(imgUrl))
+	) {
+		res.locals.error = "Image URL is not a valid URL";
+		return res.render("booking-pages/create");
+	}
 
 	try {
 		await bookingServices.create(hotel, city, freeRooms, imgUrl, userId);
