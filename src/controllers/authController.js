@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const validator = require("validator");
 
 const authServices = require("../services/authServices.js");
 const { TOKEN_COOKIE_NAME } = require("../config/constants.js");
@@ -33,6 +34,10 @@ const renderRegisterPage = (req, res) => {
 
 const registerUser = async (req, res) => {
 	let { email, username, password, rePassword } = req.body;
+	if (!validator.isEmail(email)) {
+		res.locals.error = "You need to use a valid email address";
+		return res.render("user-pages/register");
+	}
 	if (password !== rePassword) {
 		res.locals.error = "Passwords do not match!";
 		return res.render("user-pages/register");
